@@ -1,3 +1,7 @@
-# a comment  this is ignored
-*.pyc      # no .pyc files
-/about.txt # ignore the ROOT about.txt filef
+# a comment, this is ignored
+# do not add comments in same line as the rules, it seems to break the function of this file
+
+# no .pyc files
+*.pyc
+# ignore the ROOT about.txt filef
+/about.txt
