@@ -1,0 +1,266 @@
+Game: Puzzlebrawl
+~ lausleg fastayrðing gagna ~
+
+12x6 Fylki heiltalna: geymt sem listi 12 lista með 6 heiltölur hver
+
+--- class PuzzleBrawlBoard ---
+
+hiscore
+hæsta score
+
+score
+núverandi score
+
+speedlvl
+tala sem endurspeglar hversu hratt borðið rís
+
+0 <= pointerX <= 4
+0 <= pointerY <= 11
+Táknar stöðu pointersins á gefnum tíma
+pointerTick (boolean gildi, lætur pointerinn ticka í tveimur mismunandi útlitum)
+0 <= pointerCount <= 10 (niðurteljari, í núll er pointerTick invertað og pointerCount sett aftur í 10)
+
+swap (Boolean gildi, True þegar verið er að víxla blokkum en annars False)
+0 <= swapX <= 4   \
+0 <= swapY <= 11   swapX og swapY sýna hvar færsla er í gangi og swapCounter telur niður
+0 <= swapCounter  /
+
+Blocks (12x6 Fylki heiltalna)
+Geymir stöðu blokka í borðinu
+0 - Tómt svæði
+1 - Gul blokk
+2 - Rauð blokk
+3 - Græn blokk
+4 - Ljósblá blokk
+5 - Fjólublá blokk
+6 - Dökkblá blokk
+
+States (12x6 Fylki heiltalna)
+Geymir ástand borðsins
+ 0 - Ástandslaus
+ 1 - Fallandi
+ 2 - Fallandi eftir Popp
+ 3 - Högg/skopp eftir fall
+ 4 - Blokk sem var færð fram af brún
+ 5 - Fyrsta fall
+ 6 - Blokk sem Poppaði undan
+ 7 - Fyrsta fall eftir Popp
+ 8 - Merkt til að hverfa/poppa
+ 9 - Poppandi (listinn PopStates segir nánar til um ástand blokkarinnar)
+
+PopStates (12x6 Fylki heiltalna)
+Geymir stöðu poppandi blokka
+ 0 - Popp hefst, Blokk sést venjulega
+ 1 - Blikk 1
+ 2 - Blokk sést venjulega
+ 3 - Blikk 2
+ 4 - Blokk sést venjulega
+ 5 - Blikk 3
+ 6 - Blokk sést venjulega
+ 7 - Blikk 4
+ 8 - Blokk sést venjulega
+ 9 - Blikk 5
+10 - Blokk sést venjulega
+11 - Blikk 6
+12 - Blokk sést venjulega
+13 - Blikk 7
+14 - Blokk sést venjulega
+15 - Blikk 8
+16 - Blokk sést venjulega
+17 - Blikk 9
+18 - Blokk sést venjulega
+19 - Blikk 10
+20 - Blokk sést venjulega
+21 - Blikk 11
+22 - Blokk sést venjulega
+23 - Blikk 12
+24 - Blokk sést venjulega
+25 - Blikk 13
+26 - Blokk sést venjulega
+27 - Blikk 14
+28 - Blokk sést venjulega
+29 - Blikk 15
+30 - Blokk sést venjulega
+31 - Blikk 16
+32 - Blokk sést venjulega
+33 - Blikk 17
+34 - Blokk sést venjulega
+35 - Blikk 18
+36 - Blokk sést venjulega
+37 - Blikk 19
+38 - Nakið tákn blokkar (teljari PopStateCounter1)
+39 - Nakið tákn tútnað út
+40 - Nakið tákn
+41 - Nakið tákn skroppið saman
+42 - Bling 1
+43 - Bling 2
+44 - Bling 3
+45 - Bling 4
+46 - Bling 5
+47 - Bling 6
+48 - Bling 7
+49 - Bling 8
+50 - Bling 9
+51 - Bling 10
+52 - Bling 11
+53 - Bling 12
+54 - Bling 13
+55 - Bling 14
+56 - Ósýnileg Blokk (teljari PopStateCounter2)
+
+ChainStates (12x6 Fylki heiltalna) #ónotað eins og er
+Lengd keðju í poppandi blokk (til að gera mismunandi popphljóð möguleg og þess háttar)
+
+ChainCount
+Tala sem stendur fyrir lengd núverandi keðju
+
+Elevate (Boolean gildi, True þegar borðið á að hækka en annars False)
+
+Elevation
+Tala sem segir til um stöðu færslu nýrra blokka upp í borðið, 0 <= Elevation <= 19
+
+ElevateCounter
+Niðurteljari á að hækka Elevation
+
+ElevateDelayer
+Niðurteljari sem er notaður sem delayer þegar Elevation == 0 og ElevateCounter == 0
+Gefur spilara séns til að bjarga sér frá tapi þegar blokkir eru komnar upp í topp
+
+Counter (12x6 Fylki heiltalna)
+Telur niður tíma ástands.
+Í hvert sinn sem main lúppan er keyrð er 1 dreginn frá öllum gildum sem eru stærri en 0, græjað í BoardTick
+
+ComboNote (12x6 Fylki heiltalna)
+Segir til um hvar Combo merki eigi að birtast
+
+ComboNoteCounter (12x6 Fylki heiltalna)
+niðurteljari fyrir ComboNote
+
+ChainNote (12x6 Fylki heiltalna)
+Segir til um hvar Chain merki eigi að birtast
+
+ChainNoteCounter (12x6 Fylki heiltalna)
+niðurteljari fyrir ChainNote
+
+isChain (Boolean gildi)
+sett sem true þegar Chain skylirðum er mætt og keðja á að gerast í poppi sem er að gerast í þessum keyrsluhring
+
+isChainFirstBlock
+sama og isChain nema verður false eftir fyrstu blokk, notað til að staðsetja poppandi blokk efst til vinstri þar sem nóta um keðjuna er birt
+
+ChainMarks (12x6 Fylki boolean breyta)
+skilur keðjupopp frá venjulegum poppum
+
+MovePointer [-Up -Down -Right -Left] (Virkni)
+Færsla á pointer ef löglegt
+- uppfærir pointerX og pointerY
+- Spilum viðeigandi hljóð
+
+PointerSwap (Virkni)
+Animation sem tekur n frames. (n er fasti, þarf að ákveða hann)
+Tékkar hvort löglegt sé að víxla blokkum
+- Annað swap má ekki vera í gangi
+- Annað hvort svæðið verður að hafa blokk
+- Ástönd beggja svæðanna verða að vera hlutmengi í [0 1 2 3]
+- Blokkir í svæðunum fyrir ofan blokkirnar sem á að víxla mega ekki vera í eftirfarandi ástöndum [1 2 4 5 6 7]
+Ef löglegt að víxla
+- Víxlun hefst
+  + Setjum swap = True, swapX = pointerX, swapY = pointerY, swapCounter = n
+  + ef önnur hvor blokkin er tóm þá sjá til þess að blokk fyrir ofan sé látin falla (setjum í ástand 4)
+    - ef blokk fyrir neðan tóma er tóm þá sjá til þess að færð blokk sé látin falla (setjum í ástand 4)
+  + Ef ástand blokkar er 1 eða 2 þá setjum við gildið n í Counter blokkarinnar
+  + Ef önnur blokkin er í ástandi 2 og hin í ástandi 0 þá breytum við ástandi 2 í 1 og ástandi 0 í 2
+    - setjum gildið n í Counter blokkarinnar sem var í ástandi 0
+  ******                                                             --- þarf eflaust að gera meira
+  + Víxlum gildunum í svæðunum í Blocks
+  + Spilum viðeigandi hljóð
+- Víxlun lýkur (PointerSwapFinish, kallað á þetta þegar á við í BoardTick)
+  + Setjum swap = False
+  + Ef færð blokk er ástandslaus þá tékka á poppi
+
+BoardTick (Virkni, kallað á í aðallúppunni, uppfærir borðið og glæðir það lífi)
+
+
+
+
+
+---
+
+
+
+
+hugmynd að stigakerfi
+
+1 stig fyrir hverja nýja röð upp
+10 stig fyrir hvert popp
+
+COMBO stigakerfi
+4 tiles:    20 points
+5 tiles:    25 points
+6 tiles:    40 points
+7 tiles:    55 points
+8 tiles:    70 points
+9 tiles:    85 points
+10 tiles:  100 points
+11 tiles:  120 points
+12 tiles:  140 points
+13 tiles:  160 points
+14 tiles:  180 points
+15 tiles:  200 points
+16 tiles:  220 points
+17 tiles:  250 points
+18 tiles:  300 points
+19 tiles:  350 points
+20 tiles:  400 points
+21 tiles:  450 points
+22 tiles:  500 points
+23 tiles:  550 points
+24 tiles:  600 points
+25 tiles:  700 points
+26 tiles:  800 points
+27 tiles:  900 points
+28 tiles: 1000 points
+29 tiles: 1100 points
+30 tiles: 1200 points
+31 tiles: 1300 points
+32 tiles: 1400 points
+33 tiles: 1500 points
+34 tiles: 1600 points
+35 tiles: 1800 points
+SPECIAL   2000 points
+
+CHAIN stigakerfi
+x2 chain:    50 points 1
+x3 chain:    80 points 2
+x4 chain:   150 points 3
+x5 chain:   300 points 4
+x6 chain:   450 points 5
+x7 chain:   600 points 6
+x8 chain:   800 points 7
+x9 chain:  1000 points 8
+x10 chain: 1200 points 9
+x11 chain: 1450 points 10
+x12 chain: 1700 points 11
+x13 chain: 2000 points 12
+x14 chain: 2400 points 13
+?          2500 points 14
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
