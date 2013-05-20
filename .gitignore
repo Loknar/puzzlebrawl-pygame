@@ -1,3 +1,3 @@
 # a comment  this is ignored
 *.pyc      # no .pyc files
-/about.txt # ignore the ROOT about.txt file
+/about.txt # ignore the ROOT about.txt filef
