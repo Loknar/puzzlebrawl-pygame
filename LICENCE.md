@@ -1,5 +1,5 @@
-The project "puzzlebrawl" is a private project.
+I consider this project (puzzlebrawl) to be private.
 
-If you wish to contribute you can contact me via email.
+If you wish to contribute to puzzlebrawl you can contact me via email.
 
 Sveinn Floki Gudmundsson (Loknar) - svefgud@gmail.com
