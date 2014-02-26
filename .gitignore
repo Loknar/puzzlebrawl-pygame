@@ -3,5 +3,5 @@
 
 # no .pyc files
 *.pyc
-# ignore the ROOT about.txt filef
+# ignore the ROOT about.txt file
 /about.txt
