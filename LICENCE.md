@@ -1,4 +1,4 @@
-I consider this project (puzzlebrawl) to be private.
+I consider this project (puzzlebrawl) to be private, although I've made the python version of it public.
 
 If you wish to contribute to puzzlebrawl you can contact me via email.
 
